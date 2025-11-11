@@ -28,6 +28,24 @@ class BaseApi {
         throw err;
       });
   }
+
+  async PUT<T = any>(url: string, data?: any, config?: any): Promise<T> {
+    return this.axiosInstance
+      .put(url, data, { ...config })
+      .then((res) => res.data)
+      .catch((err) => {
+        throw err;
+      });
+  }
+
+  async DELETE<T = any>(url: string, config?: any): Promise<T> {
+    return this.axiosInstance
+      .delete(url, { ...config })
+      .then((res) => res.data)
+      .catch((err) => {
+        throw err;
+      });
+  }
 }
 
 export { BaseApi };
