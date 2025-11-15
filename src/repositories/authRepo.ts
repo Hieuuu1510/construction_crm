@@ -1,6 +1,7 @@
 import { AUTH_API } from "@/api/api-endpoints";
 import ApiClient from "@/config/apiConfig";
 import { IUser } from "@/interface/user.interface";
+import { LoginDto } from "@/schemas/auth.schema";
 import { CancelToken } from "axios";
 
 class authRepo {
@@ -16,7 +17,7 @@ class authRepo {
     return await ApiClient.POST(path, data);
   }
 
-  async login(data: IUser) {
+  async login(data: LoginDto) {
     const path = AUTH_API.LOGIN();
     return await ApiClient.POST(path, data);
   }
@@ -29,6 +30,11 @@ class authRepo {
   async refreshToken(refreshToken: string) {
     const path = AUTH_API.REFRESH_TOKEN();
     return await ApiClient.POST(path, { refreshToken });
+  }
+
+  async changePassword(data: IUser) {
+    const path = AUTH_API.CHANGE_PASSWORD();
+    return await ApiClient.PUT(path, data);
   }
 }
 

@@ -1,64 +1,42 @@
-import { Button } from "@/components/ui/button";
+import React from "react";
 import {
   Card,
-  // CardAction,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "../ui/card";
+import { useForm } from "react-hook-form";
+import { Button } from "../ui/button";
 import {
-  Form,
-  FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
+  FormControl,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
+  FormDescription,
+  Form,
+} from "../ui/form";
+import { Input } from "../ui/input";
+import { RegisterDto, registerSchema } from "@/schemas/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginDto, loginSchema } from "@/schemas/auth.schema";
-import { useLogin } from "@/queries/auth.query";
-import { toast } from "sonner";
-import { useAppDispatch } from "@/stores/hook";
-import { setAuth } from "@/stores/slices/authSlice";
-import CookieManager from "@/manager/CookieManager";
 import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
 
-const Login = () => {
+const Register = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const mutationLogin = useLogin();
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const form = useForm<LoginDto>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<RegisterDto>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       email: "",
       password: "",
+      username: "",
+      phone: "",
     },
   });
 
-  const _login = async (data: LoginDto) => {
-    mutationLogin
-      .mutateAsync(data)
-      .then((res) => {
-        toast.success(res.message);
-        dispatch(
-          setAuth({
-            user: res.data,
-          })
-        );
-        sessionStorage.setItem("accessToken", res.token);
-        CookieManager.setCookie("refreshToken", res.refetchToken);
-        navigate({ to: "/" });
-      })
-      .catch(({ response: { data: err } }) => {
-        toast.error(err.err_message);
-      });
+  const _register = async () => {
+    console.log(form.getValues());
   };
 
   return (
@@ -72,13 +50,7 @@ const Login = () => {
             </CardDescription>
           </div>
           {/* <CardAction> */}
-          <Button
-            className="w-2/5 justify-end"
-            variant="link"
-            onClick={() => {
-              navigate({ to: "/auth/register" });
-            }}
-          >
+          <Button className="w-2/5 justify-end" variant="link">
             Sign Up
           </Button>
           {/* </CardAction> */}
@@ -86,7 +58,7 @@ const Login = () => {
         <CardContent>
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(_login)}
+              onSubmit={form.handleSubmit(_register)}
               className="flex flex-col gap-6"
             >
               <FormField
@@ -142,4 +114,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

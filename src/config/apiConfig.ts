@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import initializeInterceptors from "@/middleware/authInterceptor";
 import axios, { AxiosInstance } from "axios";
 
 class BaseApi {
@@ -6,8 +7,11 @@ class BaseApi {
 
   constructor(baseUrl?: string) {
     this.axiosInstance = axios.create({
-      baseURL: baseUrl || process.env.BACKEND_API_URL,
+      baseURL: baseUrl || import.meta.env.VITE_BACKEND_API_URL,
     });
+
+    // middleware auth
+    new initializeInterceptors(this.axiosInstance);
   }
 
   async GET<T = any>(url: string, params?: any, config?: any): Promise<T> {

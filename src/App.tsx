@@ -2,6 +2,7 @@ import TanstackQueryProvider from "./provider/TanstackQueryProvider";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { Toaster } from "@/components/ui/sonner";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
@@ -21,6 +22,7 @@ function App() {
     <TanstackQueryProvider>
       <RouterProvider router={router} />
       <ReactQueryDevtools initialIsOpen={true} position="right" />
+      <Toaster />
     </TanstackQueryProvider>
   );
 }
