@@ -1,11 +1,11 @@
 import { IUser } from "@/interface/user.interface";
 import authRepo from "@/repositories/authRepo";
-import { LoginFormValues } from "@/schemas/auth.schema";
+import { LoginDto, RegisterDto } from "@/schemas/auth.schema";
 import { useMutation } from "@tanstack/react-query";
 
 export const useLogin = () => {
   return useMutation({
-    mutationFn: async (data: LoginFormValues) => {
+    mutationFn: async (data: LoginDto) => {
       return await authRepo.login(data);
     },
     onSuccess: (response) => {
@@ -21,12 +21,12 @@ export const useLogin = () => {
 
 export const useRegister = () => {
   return useMutation({
-    mutationFn: async (data: IUser) => {
+    mutationFn: async (data: RegisterDto) => {
       return await authRepo.register(data);
     },
-    onSuccess: ({ response, error }) => {
-      if (error || response.error) {
-        throw new Error(response.error || error);
+    onSuccess: (response) => {
+      if (response.error) {
+        throw new Error(response.error);
       }
     },
     onError: (error) => {
@@ -40,9 +40,9 @@ export const useLogout = () => {
     mutationFn: async (refreshToken: string) => {
       return await authRepo.logout(refreshToken);
     },
-    onSuccess: ({ response, error }) => {
-      if (error || response.error) {
-        throw new Error(response.error || error);
+    onSuccess: ({ response }) => {
+      if (response.error) {
+        throw new Error(response.error);
       }
     },
     onError: (error) => {
@@ -56,9 +56,9 @@ export const useRefreshToken = () => {
     mutationFn: async (refreshToken: string) => {
       return await authRepo.refreshToken(refreshToken);
     },
-    onSuccess: ({ response, error }) => {
-      if (error || response.error) {
-        throw new Error(response.error || error);
+    onSuccess: ({ response }) => {
+      if (response.error) {
+        throw new Error(response.error);
       }
     },
     onError: (error) => {

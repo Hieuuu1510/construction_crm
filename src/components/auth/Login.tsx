@@ -28,6 +28,7 @@ import { setAuth } from "@/stores/slices/authSlice";
 import CookieManager from "@/manager/CookieManager";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { PiEyeLight, PiEyeSlashLight } from "react-icons/pi";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ const Login = () => {
     },
   });
 
-  const _login = async (data: LoginDto) => {
+  const _login = (data: LoginDto) => {
     mutationLogin
       .mutateAsync(data)
       .then((res) => {
@@ -116,18 +117,33 @@ const Login = () => {
                     </div>
 
                     <FormControl>
-                      <Input
-                        placeholder="m@example.com"
-                        type="password"
-                        {...field}
-                      />
+                      <div className="relative">
+                        <Input
+                          placeholder="m@example.com"
+                          type={showPassword ? "text" : "password"}
+                          {...field}
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                        >
+                          {showPassword ? (
+                            <PiEyeLight className="h-4 w-4" />
+                          ) : (
+                            <PiEyeSlashLight className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <CardFooter className="flex-col gap-2 p-0">
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full ">
                   Login
                 </Button>
                 <Button variant="outline" className="w-full">

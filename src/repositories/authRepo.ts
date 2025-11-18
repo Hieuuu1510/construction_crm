@@ -1,7 +1,7 @@
 import { AUTH_API } from "@/api/api-endpoints";
 import ApiClient from "@/config/apiConfig";
 import { IUser } from "@/interface/user.interface";
-import { LoginDto } from "@/schemas/auth.schema";
+import { LoginDto, RegisterDto } from "@/schemas/auth.schema";
 import { CancelToken } from "axios";
 
 class authRepo {
@@ -12,7 +12,7 @@ class authRepo {
     });
   }
 
-  async register(data: IUser) {
+  async register(data: RegisterDto) {
     const path = AUTH_API.REGISTER();
     return await ApiClient.POST(path, data);
   }
